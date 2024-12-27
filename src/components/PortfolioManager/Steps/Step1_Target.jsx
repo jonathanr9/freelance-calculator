@@ -31,7 +31,7 @@ const Step1_Target = ({
               </div>
               <input
                 type="text"
-                placeholder="550€/jour"
+                placeholder="500€/jour"
                 value={newTargetFamily.name}
                 onChange={handleNameChange}
                 className="border border-gray-200 rounded-lg px-3 py-2 flex-1 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 uppercase"
@@ -52,7 +52,7 @@ const Step1_Target = ({
               <div className="flex gap-4 flex-1">
                 <input
                   type="number"
-                  placeholder="18j/mois"
+                  placeholder="20j/mois"
                   value={newTargetFamily.weight}
                   onChange={(e) => handleTargetFamilyChange(e, 'weight')}
                   className="border border-gray-200 rounded-lg px-3 py-2 w-48 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"

@@ -1,107 +1,84 @@
 import React from 'react';
-import { Trash2 } from 'lucide-react';
-import { calculateFamilyValue } from '../utils/calculations';
 
-const Step2_Current = ({
-  newCurrentFamily,
-  handleCurrentFamilyChange,
-  handleAddCurrentFamily,
-  currentFamilies,
-  targetFamilies,
-  handleDeleteCurrentFamily
-}) => {
+const Step2_Current = ({ userInfo, setUserInfo }) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUserInfo(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
   return (
-    <div className="space-y-6">
-      {/* Question en haut de page */}
-      <h2 className="text-xl font-bold text-emerald-800 mb-6">
-        Quel est votre portefeuille d'ETF investi actuellement ?
-      </h2>
+    <div className="max-w-2xl mx-auto">
+      <div className="bg-white rounded-xl shadow-lg p-8">
+        <h2 className="text-2xl font-bold text-emerald-800 mb-6">
+          Obtenez votre estimation personnalisée
+        </h2>
+        
+        <p className="text-gray-600 mb-6">
+          Merci de renseigner vos informations pour recevoir une estimation détaillée.
+        </p>
 
-      <div className="bg-white rounded-lg shadow-lg p-6">
-        <form onSubmit={handleAddCurrentFamily} className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <select
-              value={newCurrentFamily.familyName}
-              onChange={(e) => handleCurrentFamilyChange(e, 'familyName')}
-              className="border border-gray-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500"
-              required
-            >
-              <option value="">Sélectionner une famille</option>
-              {targetFamilies.map((family, index) => (
-                <option key={index} value={family.name}>{family.name}</option>
-              ))}
-              <option value="AUTRE">Autre</option>
-            </select>
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Prénom
+              </label>
+              <input
+                type="text"
+                name="firstName"
+                value={userInfo.firstName}
+                onChange={handleChange}
+                required
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Nom
+              </label>
+              <input
+                type="text"
+                name="lastName"
+                value={userInfo.lastName}
+                onChange={handleChange}
+                required
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Email
+            </label>
             <input
-              placeholder="Nom ETF"
-              value={newCurrentFamily.etfName}
-              onChange={(e) => handleCurrentFamilyChange(e, 'etfName')}
-              className="border border-gray-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500"
+              type="email"
+              name="email"
+              value={userInfo.email}
+              onChange={handleChange}
               required
-            />
-            <input
-              type="number"
-              placeholder="Quantité"
-              value={newCurrentFamily.quantity}
-              onChange={(e) => handleCurrentFamilyChange(e, 'quantity')}
-              className="border border-gray-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500"
-              required
-            />
-            <input
-              placeholder="Support bancaire (facultatif)"
-              value={newCurrentFamily.bank}
-              onChange={(e) => handleCurrentFamilyChange(e, 'bank')}
-              className="border border-gray-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
             />
           </div>
-          <button 
-            type="submit" 
-            className="w-full px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors"
-          >
-            Ajouter
-          </button>
-        </form>
-      </div>
 
-      {currentFamilies.length > 0 && (
-        <div className="bg-white rounded-lg shadow-lg p-6">
-          <h3 className="text-xl font-bold text-emerald-800 mb-4">ETFs ajoutés</h3>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="bg-gray-50">
-                  <th className="p-3 text-left">Famille</th>
-                  <th className="p-3 text-left">ETF</th>
-                  <th className="p-3 text-right">Quantité</th>
-                  <th className="p-3 text-right">Montant Total</th>
-                  <th className="p-3 text-left">Banque</th>
-                  <th className="p-3 text-center">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {currentFamilies.map((family, index) => (
-                  <tr key={index} className="border-b">
-                    <td className="p-3">{family.familyName}</td>
-                    <td className="p-3">{family.etfName}</td>
-                    <td className="p-3 text-right">{family.quantity}</td>
-                    <td className="p-3 text-right">{calculateFamilyValue(family).toLocaleString()}€</td>
-                    <td className="p-3">{family.bank || '-'}</td>
-                    <td className="p-3 text-center">
-                      <button
-                        onClick={() => handleDeleteCurrentFamily(index)}
-                        className="text-red-500 hover:text-red-700 transition-colors"
-                        title="Supprimer"
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Téléphone (facultatif)
+            </label>
+            <input
+              type="tel"
+              name="phone"
+              value={userInfo.phone || ''}
+              onChange={handleChange}
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+            />
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };

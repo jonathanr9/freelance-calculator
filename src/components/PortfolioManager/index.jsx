@@ -1,13 +1,12 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Info } from 'lucide-react';
-import Step1_Target from './Steps/Step1_Target.jsx';
-import Step2_Current from './Steps/Step2_Current.jsx';
-
+import Step1_Target from './Steps/Step1_Target';
+import Step2_Current from './Steps/Step2_Current';
+import Step3_Confirm from './Steps/Step3_Confirm';
 
 // Définition de la ProgressBar
 const ProgressBar = ({ currentStep }) => {
-  const steps = ["Vos informations", "Notre estimation"];
+  const steps = ["Vos informations", "Vos coordonnées", "Confirmation"];
   return (
     <div className="mb-8">
       <div className="flex justify-between mb-2">
@@ -43,20 +42,12 @@ const PortfolioManager = () => {
   // États
   const [currentStep, setCurrentStep] = useState(1);
   const [targetFamilies, setTargetFamilies] = useState([]);
-  const [currentFamilies, setCurrentFamilies] = useState([]);
   const [newTargetFamily, setNewTargetFamily] = useState({ name: '', weight: '' });
-  const [newCurrentFamily, setNewCurrentFamily] = useState({ 
-    familyName: '', 
-    etfName: '',
-    symbol: '',
-    quantity: '',
-    bank: ''
-  });
-  const [cashBalance, setCashBalance] = useState('');
   const [userInfo, setUserInfo] = useState({
     firstName: '',
     lastName: '',
-    email: ''
+    email: '',
+    phone: ''
   });
 
   // Gestionnaires d'événements
@@ -64,13 +55,6 @@ const PortfolioManager = () => {
     setNewTargetFamily(prev => ({
       ...prev,
       [field]: field === 'name' ? e.target.value.toUpperCase() : e.target.value
-    }));
-  };
-
-  const handleCurrentFamilyChange = (e, field) => {
-    setNewCurrentFamily(prev => ({
-      ...prev,
-      [field]: e.target.value
     }));
   };
 
@@ -101,25 +85,23 @@ const PortfolioManager = () => {
     setNewTargetFamily({ name: '', weight: '' });
   };
 
-  const handleAddCurrentFamily = (e) => {
-    e.preventDefault();
-    if (!newCurrentFamily.familyName || !newCurrentFamily.etfName || !newCurrentFamily.quantity) {
-      alert('Veuillez remplir tous les champs obligatoires');
+  const handleNext = () => {
+    // Validation avant de passer à l'étape suivante
+    if (currentStep === 1 && (!newTargetFamily.name || !newTargetFamily.weight)) {
+      alert("Veuillez remplir tous les champs avant de continuer");
       return;
     }
-    
-    setCurrentFamilies(prev => [...prev, { ...newCurrentFamily }]);
-    setNewCurrentFamily({ 
-      familyName: '', 
-      etfName: '',
-      symbol: '',
-      quantity: '',
-      bank: ''
-    });
+
+    if (currentStep === 2 && (!userInfo.firstName || !userInfo.lastName || !userInfo.email)) {
+      alert("Veuillez remplir tous les champs obligatoires");
+      return;
+    }
+
+    setCurrentStep(prev => Math.min(3, prev + 1));
   };
 
-  const handleDeleteCurrentFamily = (index) => {
-    setCurrentFamilies(prev => prev.filter((_, i) => i !== index));
+  const handleBack = () => {
+    setCurrentStep(prev => Math.max(1, prev - 1));
   };
 
   return (
@@ -140,25 +122,33 @@ const PortfolioManager = () => {
             )}
             {currentStep === 2 && (
               <Step2_Current 
-                newCurrentFamily={newCurrentFamily}
-                handleCurrentFamilyChange={handleCurrentFamilyChange}
-                handleAddCurrentFamily={handleAddCurrentFamily}
-                currentFamilies={currentFamilies}
-                targetFamilies={targetFamilies}
-                handleDeleteCurrentFamily={handleDeleteCurrentFamily}
+                userInfo={userInfo}
+                setUserInfo={setUserInfo}
               />
             )}
-
+            {currentStep === 3 && (
+              <Step3_Confirm 
+                userInfo={userInfo}
+              />
+            )}
           </div>
           <div className="flex justify-between">
             <button
-              onClick={() => setCurrentStep(prev => Math.max(1, prev - 1))}
+              onClick={handleBack}
               className="px-6 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               disabled={currentStep === 1}
             >
               Précédent
             </button>
-          
+
+            {currentStep < 3 && (
+              <button
+                onClick={handleNext}
+                className="px-6 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors"
+              >
+                Suivant
+              </button>
+            )}
           </div>
         </div>
       </div>
