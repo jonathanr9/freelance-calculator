@@ -6,7 +6,7 @@ import Step3_Confirm from './Steps/Step3_Confirm';
 
 // Définition de la ProgressBar
 const ProgressBar = ({ currentStep }) => {
-  const steps = ["Vos informations", "Vos coordonnées", "Confirmation"];
+  const steps = ["Vos informations", "Notre estimation", "Confirmation"];
   return (
     <div className="mb-8">
       <div className="flex justify-between mb-2">
