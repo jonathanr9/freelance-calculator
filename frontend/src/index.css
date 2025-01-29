@@ -36,23 +36,13 @@ textarea:focus {
     box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
 }
 
-/* Custom scrollbar for modern browsers */
-::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+.no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;     /* Firefox */
 }
 
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #fb923c;
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #f97316;
+.no-scrollbar::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
 }
 
 /* Disable number input arrows */

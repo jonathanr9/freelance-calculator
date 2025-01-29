@@ -5,11 +5,11 @@ const Step3_Confirm = ({ userInfo }) => {
   return (
     <div className="max-w-2xl mx-auto">
       <div className="bg-white rounded-xl shadow-lg p-8 text-center">
-        <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
-          <CheckCircle size={32} className="text-emerald-600" />
+        <div className="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-6">
+          <CheckCircle size={32} className="text-teal-600" />
         </div>
 
-        <h2 className="text-2xl font-bold text-emerald-800 mb-4">
+        <h2 className="text-2xl font-bold text-teal-800 mb-4">
           Merci {userInfo.firstName} !
         </h2>
         
@@ -17,9 +17,9 @@ const Step3_Confirm = ({ userInfo }) => {
           Votre demande a été enregistrée avec succès. Vous recevrez votre estimation par email dans les plus brefs délais à l'adresse suivante : {userInfo.email}
         </p>
 
-        <div className="bg-emerald-50 rounded-lg p-6 mb-6">
-          <p className="text-sm text-emerald-800">
-            Notre équipe d'experts analysera votre profil et vous enverra une estimation détaillée
+        <div className="bg-teal-50 rounded-lg p-6 mb-6">
+          <p className="text-sm text-teal-800">
+            Notre équipe d'experts analyseront votre profil et vous enverra une estimation détaillée
           </p>
         </div>
 
